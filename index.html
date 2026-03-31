@@ -12,6 +12,7 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Shearline — Tactical RPG Where Fractured Time Shapes the Battlefield">
   <meta name="twitter:description" content="A grid-based tactical RPG where fractured time shapes the battlefield. Put each character on the terrain they can master, or reshape the fight. Coming to Steam.">
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="35614f57-40ba-423c-9a8f-038f558b6916"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -294,7 +295,7 @@
       <h1 class="hook">Fractured time shapes the battlefield.</h1>
       <p class="subhook">Put each character on the terrain they can master, or reshape the battlefield to steal back a fair fight.</p>
       <div class="cta-row">
-        <a href="#updates" class="btn btn-amber">Get Updates</a>
+        <a href="#updates" class="btn btn-amber" data-analytics-event="Get Updates Click">Get Updates</a>
       </div>
     </div>
   </section>
@@ -335,6 +336,18 @@
   </footer>
 
   <script>
+    function trackEvent(name) {
+      if (window.umami && typeof window.umami.track === 'function') {
+        window.umami.track(name);
+      }
+    }
+
+    document.querySelectorAll('[data-analytics-event]').forEach((element) => {
+      element.addEventListener('click', () => {
+        trackEvent(element.dataset.analyticsEvent);
+      });
+    });
+
     document.getElementById('signup-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const form = e.target;
@@ -354,6 +367,7 @@
         );
 
         if (response.ok) {
+          trackEvent('Email Signup');
           form.style.display = 'none';
           success.style.display = 'block';
         } else {
