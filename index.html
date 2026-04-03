@@ -87,7 +87,26 @@
       ]
     }
   </script>
-  <script defer src="https://cloud.umami.is/script.js" data-website-id="35614f57-40ba-423c-9a8f-038f558b6916"></script>
+  <script>
+    (function () {
+      var analyticsHosts = new Set(['shearlinegame.com', 'www.shearlinegame.com']);
+      var analyticsEnabled =
+        window.location.protocol === 'https:' &&
+        analyticsHosts.has(window.location.hostname);
+
+      window.__shearlineAnalyticsEnabled = analyticsEnabled;
+
+      if (!analyticsEnabled) {
+        return;
+      }
+
+      var script = document.createElement('script');
+      script.defer = true;
+      script.src = 'https://cloud.umami.is/script.js';
+      script.dataset.websiteId = '35614f57-40ba-423c-9a8f-038f558b6916';
+      document.head.appendChild(script);
+    })();
+  </script>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -622,6 +641,10 @@
 
   <script>
     function trackEvent(name) {
+      if (!window.__shearlineAnalyticsEnabled) {
+        return;
+      }
+
       if (window.umami && typeof window.umami.track === 'function') {
         window.umami.track(name);
       }
